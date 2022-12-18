@@ -16,11 +16,29 @@ public class EmployeeBook {
         employees[size++] = newEmployee;
     }
 
+    public void removeEmployee(String fullName) {
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i].getFullName().equals(fullName)) {
+                System.out.println("Удален сотрудник: " + employees[i].getFullName());
+                System.arraycopy(employees, i + 1, employees, i, size - i - 1);
+                employees[size - 1] = null;
+//                employees[i] = null;
+                size--;
+                return;
+            }
+        }
+    }
+
     public void printAllEmployees() {
         for (int i = 0; i < size; i++) {
             Employee employee = employees[i];
             System.out.println(employee);
         }
+    }
+
+    public void printRenewedListOfEmployees() {
+        System.out.println("Обновленный перечень всех сотрудников:");
+        printAllEmployees();
     }
 
     public int calculateTotalExpensesForSalary() {
@@ -76,8 +94,7 @@ public class EmployeeBook {
 
     public int calculateAverageSalaryPerMonth() {
         int totalSalary = calculateTotalExpensesForSalary();
-        int averageSalary = totalSalary / size;
-        return averageSalary;
+        return totalSalary / size;
     }
 
     public void printAllFullNames() {
@@ -184,8 +201,7 @@ public class EmployeeBook {
 
     public int calculateAverageSalaryPerMonthByDepartment(Employee[] departmentEmployees) {
         int totalSalary = calculateTotalExpensesForSalaryByDepartment(departmentEmployees);
-        int averageSalary = totalSalary / departmentEmployees.length;
-        return averageSalary;
+        return totalSalary / departmentEmployees.length;
     }
 
     public void printListOfEmployeesWithAdjustedSalaryByDepartment(Employee[] departmentEmployees, int increase) {

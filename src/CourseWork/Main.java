@@ -18,13 +18,22 @@ public class Main {
         employeeBook.addEmployee("Толстой Лев Николаевич", 5, 70_000);
         employeeBook.addEmployee("Есенин Сергей Александрович", 1, 45_000);
         employeeBook.addEmployee("Маяковский Владимир Владимирович", 3, 53_000);
-        employeeBook.addEmployee("Ахматова Анна Андреевна", 5, 63_000);
+        employeeBook.addEmployee("Ахматова Анна Андреевна", 5, 43_000);
 
         insertSeparator();
         System.out.println("Книга сотрудников");
         insertSeparator();
         employeeBook.printAllEmployees();
         insertSeparator();
+
+        employeeBook.removeEmployee("Грибоедов Александр Сергеевич");
+        insertSeparator();
+        employeeBook.printRenewedListOfEmployees();
+        insertSeparator();
+        employeeBook.addEmployee("Блок Александр Александрович", 4, 80_000);
+        employeeBook.printRenewedListOfEmployees();
+        insertSeparator();
+
         int totalSalaryForMonth = employeeBook.calculateTotalExpensesForSalary();
         System.out.println("Сумма затрат на зарплаты в месяц составляет " + totalSalaryForMonth + " руб.");
         insertSeparator();
