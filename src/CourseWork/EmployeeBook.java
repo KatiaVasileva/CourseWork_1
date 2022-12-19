@@ -9,6 +9,8 @@ public class EmployeeBook {
     }
 
     public void addEmployee(String fullName, int department, int salary) {
+        checkDepartment(department);
+        checkSalary(salary);
         if (size >= employees.length) {
             System.out.println("Нельзя добавить нового сотрудника, так как закончилось место.");
         }
@@ -22,11 +24,11 @@ public class EmployeeBook {
                 System.out.println("Удален сотрудник: " + employees[i].getFullName());
                 System.arraycopy(employees, i + 1, employees, i, size - i - 1);
                 employees[size - 1] = null;
-//                employees[i] = null;
                 size--;
                 return;
             }
         }
+        System.out.println("Сотрудник" + fullName + " не найден.");
     }
 
     public void printAllEmployees() {
@@ -34,11 +36,6 @@ public class EmployeeBook {
             Employee employee = employees[i];
             System.out.println(employee);
         }
-    }
-
-    public void printRenewedListOfEmployees() {
-        System.out.println("Обновленный перечень всех сотрудников:");
-        printAllEmployees();
     }
 
     public int calculateTotalExpensesForSalary() {
@@ -107,9 +104,7 @@ public class EmployeeBook {
     }
 
     public void printAdjustedSalary(int increase) {
-        if (increase < 1 || increase > 100) {
-            throw new IllegalArgumentException("Введено некорректное значение <индексация зарплаты>: " + increase);
-        }
+        checkSalaryIncrease(increase);
         System.out.printf("Полный перечень всех сотрудников с указанием зарплаты, проиндексированной на %d %%:\n",
                 increase);
         for (int i = 0; i < size; i++) {
@@ -121,9 +116,7 @@ public class EmployeeBook {
     }
 
     public Employee[] generateDepartmentEmployees(int department) {
-        if (department < 1 || department > 5) {
-            throw new IllegalArgumentException("Введено некорректное значение <отдел>: " + department);
-        }
+        checkDepartment(department);
         int arraySize = 0;
         for (int i = 0; i < size; i++) {
             Employee employee = employees[i];
@@ -205,6 +198,7 @@ public class EmployeeBook {
     }
 
     public void printListOfEmployeesWithAdjustedSalaryByDepartment(Employee[] departmentEmployees, int increase) {
+        checkSalaryIncrease(increase);
         System.out.printf("Перечень всех сотрудников отдела с указанием зарплаты, проиндексированной на %d %%:\n",
                 increase);
         for (Employee departmentEmployee : departmentEmployees) {
@@ -243,5 +237,60 @@ public class EmployeeBook {
     public void printEmployeesWithoutDepartment(Employee employee) {
         System.out.println(employee.getId() + ". " + employee.getFullName() + ", зарплата: "
                 + employee.getSalary() + " руб.");
+    }
+
+    public void changeSalary(String fullName, int newSalary) {
+        checkSalary(newSalary);
+        for (Employee employee : employees) {
+            if (employee.getFullName().equals(fullName)) {
+                employee.setSalary(newSalary);
+                System.out.println("Обновленные данные по сотруднику " + fullName + " (изменение зарплаты):");
+                System.out.println(employee);
+                return;
+            }
+        }
+        System.out.println("Сотрудник" + fullName + " не найден.");
+    }
+
+    public void changeDepartment(String fullName, int newDepartment) {
+        checkDepartment(newDepartment);
+        for (Employee employee : employees) {
+            if (employee.getFullName().equals(fullName)) {
+                employee.setDepartment(newDepartment);
+                System.out.println("Обновленные данные по сотруднику " + fullName + " (изменение отдела):");
+                System.out.println(employee);
+                return;
+            }
+        }
+        System.out.println("Сотрудник" + fullName + " не найден.");
+    }
+
+    public void printAllEmployeesByDepartment() {
+        for (int i = 1; i <= 5; i++) {
+            System.out.println("Отдел " + i);
+            for (int j = 0; j < size; j++) {
+                Employee employee = employees[j];
+                if (employee.getDepartment() == i) {
+                    System.out.println(employee.getFullName());
+                }
+            }
+        }
+    }
+
+//  Проверка передаваемых параметров
+    public void checkDepartment(int department) {
+        if (department < 1 || department > 5) {
+            throw new IllegalArgumentException("Введено некорректное значение <отдел>: " + department);
+        }
+    }
+    public void checkSalaryIncrease(int increase) {
+        if (increase < 1 || increase > 100) {
+            throw new IllegalArgumentException("Введено некорректное значение <процент индексации зарплаты>: " + increase);
+        }
+    }
+    public void checkSalary(int salary) {
+        if (salary < 0 || salary > 1_000_000) {
+            throw new IllegalArgumentException("Введено некорректное значение <зарплата>: " + salary);
+        }
     }
 }

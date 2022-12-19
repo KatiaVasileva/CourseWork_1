@@ -16,10 +16,6 @@ public class Employee {
         id = ++counter;
     }
 
-    public static int getCounter() {
-        return counter;
-    }
-
     public int getId() {
         return id;
     }

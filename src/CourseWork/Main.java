@@ -25,15 +25,6 @@ public class Main {
         insertSeparator();
         employeeBook.printAllEmployees();
         insertSeparator();
-
-        employeeBook.removeEmployee("Грибоедов Александр Сергеевич");
-        insertSeparator();
-        employeeBook.printRenewedListOfEmployees();
-        insertSeparator();
-        employeeBook.addEmployee("Блок Александр Александрович", 4, 80_000);
-        employeeBook.printRenewedListOfEmployees();
-        insertSeparator();
-
         int totalSalaryForMonth = employeeBook.calculateTotalExpensesForSalary();
         System.out.println("Сумма затрат на зарплаты в месяц составляет " + totalSalaryForMonth + " руб.");
         insertSeparator();
@@ -55,10 +46,10 @@ public class Main {
         Employee[] departmentEmployees = employeeBook.generateDepartmentEmployees(department);
         System.out.println("Ниже приведена информация по отделу " + department + "\n");
         employeeBook.printListOfDepartmentEmployees(departmentEmployees);
-        int minSalaryByDepartment = employeeBook.findMinimumSalaryInDepartment(departmentEmployees);
-        employeeBook.printEmployeeWithMinimumSalaryInDepartment(departmentEmployees, minSalaryByDepartment);
-        int maxSalaryByDepartment = employeeBook.findMaximumSalaryInDepartment(departmentEmployees);
-        employeeBook.printEmployeeWithMaximumSalaryInDepartment(departmentEmployees, maxSalaryByDepartment);
+        int minSalaryInDepartment = employeeBook.findMinimumSalaryInDepartment(departmentEmployees);
+        employeeBook.printEmployeeWithMinimumSalaryInDepartment(departmentEmployees, minSalaryInDepartment);
+        int maxSalaryInDepartment = employeeBook.findMaximumSalaryInDepartment(departmentEmployees);
+        employeeBook.printEmployeeWithMaximumSalaryInDepartment(departmentEmployees, maxSalaryInDepartment);
         int totalSalaryForDepartment = employeeBook.calculateTotalExpensesForSalaryByDepartment(departmentEmployees);
         System.out.println("Сумма затрат на зарплаты по отделу в месяц составляет " + totalSalaryForDepartment + " руб.");
         int averageSalaryForDepartment = employeeBook.calculateAverageSalaryPerMonthByDepartment(departmentEmployees);
@@ -70,6 +61,21 @@ public class Main {
         employeeBook.findEmployeesWithSalaryEqualOrHigherThanNumber(number);
         insertSeparator();
         employeeBook.findEmployeesWithSalaryLowerThanNumber(number);
+        insertSeparator();
+        employeeBook.removeEmployee("Грибоедов Александр Сергеевич");
+        insertSeparator();
+        System.out.println("Обновленный перечень всех сотрудников (удален сотрудник):");
+        employeeBook.printAllEmployees();
+        insertSeparator();
+        employeeBook.addEmployee("Блок Александр Александрович", 4, 80_000);
+        System.out.println("Обновленный перечень всех сотрудников (добавлен сотрудник):");
+        employeeBook.printAllEmployees();
+        insertSeparator();
+        employeeBook.changeSalary("Ахматова Анна Андреевна", 50_000);
+        insertSeparator();
+        employeeBook.changeDepartment("Есенин Сергей Александрович", 5);
+        insertSeparator();
+        employeeBook.printAllEmployeesByDepartment();
         insertSeparator();
     }
 
