@@ -146,7 +146,7 @@ public class EmployeeBook {
     }
 
     public int findMinimumSalaryInDepartment(Employee[] departmentEmployees) {
-        int minSalary = 100_000;
+        int minSalary = Integer.MAX_VALUE;
         for (Employee departmentEmployee : departmentEmployees) {
             if (departmentEmployee.getSalary() < minSalary) {
                 minSalary = departmentEmployee.getSalary();
@@ -166,7 +166,7 @@ public class EmployeeBook {
     }
 
     public int findMaximumSalaryInDepartment(Employee[] departmentEmployees) {
-        int maxSalary = 0;
+        int maxSalary = Integer.MIN_VALUE;
         for (Employee departmentEmployee : departmentEmployees) {
             if (departmentEmployee.getSalary() > maxSalary) {
                 maxSalary = departmentEmployee.getSalary();
