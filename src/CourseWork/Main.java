@@ -7,7 +7,7 @@ public class Main {
         employeeBook.addEmployee("Пушкин Александр Сергеевич", 1, 55_000);
         employeeBook.addEmployee("Лермонтов Михаил Юрьевич", 2, 55_000);
         employeeBook.addEmployee("Достоевский Федор Михайлович", 2, 70_000);
-        employeeBook.addEmployee("Тургенев Иван Сергеевич", 2, 60_000);
+        employeeBook.addEmployee("Тургенев Иван Сергеевич", 2, 160_000);
         employeeBook.addEmployee("Гончаров Иван Александрович", 1, 44_000);
         employeeBook.addEmployee("Гоголь Николай Васильевич", 3, 88_000);
         employeeBook.addEmployee("Островский Александр Николаевич", 3, 48_000);

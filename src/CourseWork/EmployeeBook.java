@@ -1,5 +1,7 @@
 package CourseWork;
 
+import java.lang.Integer;
+
 public class EmployeeBook {
     private final Employee[] employees;
     private int size;
@@ -48,7 +50,7 @@ public class EmployeeBook {
     }
 
     public int findMinimumSalary() {
-        int minSalary = 100_000;
+        int minSalary = Integer.MAX_VALUE;
         for (int i = 0; i < size; i++) {
             Employee employee = employees[i];
             if (employee.getSalary() < minSalary) {
@@ -69,7 +71,7 @@ public class EmployeeBook {
     }
 
     public int findMaximumSalary() {
-        int maxSalary = 0;
+        int maxSalary = Integer.MIN_VALUE;
         for (int i = 0; i < size; i++) {
             Employee employee = employees[i];
             if (employee.getSalary() > maxSalary) {
