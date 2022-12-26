@@ -3,25 +3,37 @@ package CourseWork;
 import java.util.Objects;
 
 public class Employee {
-    private static int counter;
-    private final String fullName;
-    private final int id;
+    private static long counter;
+    private final String lastName;
+    private final String firstName;
+    private final String middleName;
+    private final long id;
     private int department;
-    private int salary;
+    private double salary;
 
-    public Employee(String fullName, int department, int salary) {
-        this.fullName = fullName;
+    public Employee(String lastName, String firstName, String middleName, int department, double salary) {
+        this.lastName = lastName;
+        this.firstName = firstName;
+        this.middleName = middleName;
         this.department = department;
         this.salary = salary;
         id = ++counter;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getLastName() {
+        return lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getMiddleName() {
+        return middleName;
     }
 
     public int getDepartment() {
@@ -32,17 +44,17 @@ public class Employee {
         this.department = department;
     }
 
-    public int getSalary() {
+    public double getSalary() {
         return salary;
     }
 
-    public void setSalary(int salary) {
+    public void setSalary(double salary) {
         this.salary = salary;
     }
 
     @Override
     public String toString() {
-        return id + ". " + fullName + ", отдел: " + department + ", зарплата: " + salary + " руб.";
+        return id + ". " + lastName + " " + firstName + " " + middleName + ", отдел: " + department + ", зарплата: " + salary + " руб.";
     }
 
     @Override
@@ -54,11 +66,11 @@ public class Employee {
             return false;
         }
         Employee employee = (Employee) other;
-        return fullName.equals(employee.fullName);
+        return id == employee.id && lastName.equals(employee.lastName) && firstName.equals(employee.firstName) && middleName.equals(employee.middleName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fullName);
+        return Objects.hash(lastName, firstName, middleName, id);
     }
 }

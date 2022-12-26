@@ -1,7 +1,5 @@
 package CourseWork;
 
-import java.lang.Integer;
-
 public class EmployeeBook {
     private final Employee[] employees;
     private int size;
@@ -10,27 +8,29 @@ public class EmployeeBook {
         this.employees = new Employee[15];
     }
 
-    public void addEmployee(String fullName, int department, int salary) {
+    public void addEmployee(String lastName, String firstName, String middleName, int department, int salary) {
         checkDepartment(department);
         checkSalary(salary);
         if (size >= employees.length) {
             System.out.println("Нельзя добавить нового сотрудника, так как закончилось место.");
         }
-        Employee newEmployee = new Employee(fullName, department, salary);
+        Employee newEmployee = new Employee(lastName, firstName, middleName, department, salary);
         employees[size++] = newEmployee;
     }
 
-    public void removeEmployee(String fullName) {
+    public void removeEmployee(String lastName, String firstName, String middleName) {
         for (int i = 0; i < employees.length; i++) {
-            if (employees[i].getFullName().equals(fullName)) {
-                System.out.println("Удален сотрудник: " + employees[i].getFullName());
+            if (employees[i].getLastName().equals(lastName) && employees[i].getFirstName().equals(firstName)
+                && employees[i].getMiddleName().equals(middleName)) {
+                System.out.println("Удален сотрудник: " + employees[i].getLastName() + " " + employees[i].getFirstName()
+                                    + " " + employees[i].getMiddleName());
                 System.arraycopy(employees, i + 1, employees, i, size - i - 1);
                 employees[size - 1] = null;
                 size--;
                 return;
             }
         }
-        System.out.println("Сотрудник" + fullName + " не найден.");
+        System.out.println("Сотрудник с таким именем не найден.");
     }
 
     public void printAllEmployees() {
@@ -40,8 +40,8 @@ public class EmployeeBook {
         }
     }
 
-    public int calculateTotalExpensesForSalary() {
-        int totalSalary = 0;
+    public double calculateTotalExpensesForSalary() {
+        double totalSalary = 0;
         for (int i = 0; i < size; i++) {
             Employee employee = employees[i];
             totalSalary = totalSalary + employee.getSalary();
@@ -49,8 +49,19 @@ public class EmployeeBook {
         return totalSalary;
     }
 
-    public int findMinimumSalary() {
-        int minSalary = Integer.MAX_VALUE;
+/* Метод getTheFirstSalary получает значение зарплаты сотрудника, записанного в первую ячейку массива. В дальнейшем это значение
+* будет использоваться для нахождения минимальной и максимальной зарплаты сотрудников путем сравнения. Единственная проверка -
+* это наличие значения в первом элементе массиве (не равно null); если значение равно null, то массив пустой, поскольку при удалении
+* сотрудников из массива выполняется сдвиг массива на одну ячейку, и при наличии хотя бы одной записи первая ячейка не может быть пустой. */
+    public double getTheFirstSalary() {
+        if (employees[0].equals(null)) {
+            throw new RuntimeException("В книге учета сотрудников отсутствуют данные, введите данные о сотрудниках.");
+        }
+        return employees[0].getSalary();
+    }
+
+    public double findMinimumSalary() {
+        double minSalary = getTheFirstSalary();
         for (int i = 0; i < size; i++) {
             Employee employee = employees[i];
             if (employee.getSalary() < minSalary) {
@@ -60,7 +71,7 @@ public class EmployeeBook {
         return minSalary;
     }
 
-    public void printEmployeeWithMinimumSalary(int minSalary) {
+    public void printEmployeeWithMinimumSalary(double minSalary) {
         System.out.println("Сотрудник(-и) с минимальной зарплатой:");
         for (int i = 0; i < size; i++) {
             Employee employee = employees[i];
@@ -70,8 +81,8 @@ public class EmployeeBook {
         }
     }
 
-    public int findMaximumSalary() {
-        int maxSalary = Integer.MIN_VALUE;
+    public double findMaximumSalary() {
+        double maxSalary = getTheFirstSalary();
         for (int i = 0; i < size; i++) {
             Employee employee = employees[i];
             if (employee.getSalary() > maxSalary) {
@@ -81,7 +92,7 @@ public class EmployeeBook {
         return maxSalary;
     }
 
-    public void printEmployeeWithMaximumSalary(int maxSalary) {
+    public void printEmployeeWithMaximumSalary(double maxSalary) {
         System.out.println("Сотрудник(-и) с максимальной зарплатой:");
         for (int i = 0; i < size; i++) {
             Employee employee = employees[i];
@@ -91,8 +102,8 @@ public class EmployeeBook {
         }
     }
 
-    public int calculateAverageSalaryPerMonth() {
-        int totalSalary = calculateTotalExpensesForSalary();
+    public double calculateAverageSalaryPerMonth() {
+        double totalSalary = calculateTotalExpensesForSalary();
         return totalSalary / size;
     }
 
@@ -100,18 +111,18 @@ public class EmployeeBook {
         System.out.println("Полный перечень Ф.И.О всех сотрудников:");
         for (int i = 0; i < size; i++) {
             Employee employee = employees[i];
-            String fullName = employee.getFullName();
+            String fullName = employee.getLastName() + " " + employee.getFirstName() + " " + employee.getMiddleName();
             System.out.println(fullName);
         }
     }
 
-    public void printAdjustedSalary(int increase) {
+    public void printAdjustedSalary(double increase) {
         checkSalaryIncrease(increase);
-        System.out.printf("Полный перечень всех сотрудников с указанием зарплаты, проиндексированной на %d %%:\n",
+        System.out.printf("Полный перечень всех сотрудников с указанием зарплаты, проиндексированной на %.2f %%:\n",
                 increase);
         for (int i = 0; i < size; i++) {
             Employee employee = employees[i];
-            int increasedSalary = employee.getSalary() + employee.getSalary() * increase / 100;
+            double increasedSalary = employee.getSalary() + employee.getSalary() * increase / 100;
             employee.setSalary(increasedSalary);
             System.out.println(employee);
         }
@@ -145,8 +156,8 @@ public class EmployeeBook {
         System.out.println();
     }
 
-    public int findMinimumSalaryInDepartment(Employee[] departmentEmployees) {
-        int minSalary = Integer.MAX_VALUE;
+    public double findMinimumSalaryInDepartment(Employee[] departmentEmployees) {
+        double minSalary = getTheFirstSalary();
         for (Employee departmentEmployee : departmentEmployees) {
             if (departmentEmployee.getSalary() < minSalary) {
                 minSalary = departmentEmployee.getSalary();
@@ -154,7 +165,7 @@ public class EmployeeBook {
         }
         return minSalary;
     }
-    public void printEmployeeWithMinimumSalaryInDepartment(Employee[] departmentEmployees, int minSalary) {
+    public void printEmployeeWithMinimumSalaryInDepartment(Employee[] departmentEmployees, double minSalary) {
         for (Employee departmentEmployee : departmentEmployees) {
             int department = departmentEmployee.getDepartment();
             if (departmentEmployee.getSalary() == minSalary) {
@@ -165,8 +176,8 @@ public class EmployeeBook {
         System.out.println();
     }
 
-    public int findMaximumSalaryInDepartment(Employee[] departmentEmployees) {
-        int maxSalary = Integer.MIN_VALUE;
+    public double findMaximumSalaryInDepartment(Employee[] departmentEmployees) {
+        double maxSalary = getTheFirstSalary();
         for (Employee departmentEmployee : departmentEmployees) {
             if (departmentEmployee.getSalary() > maxSalary) {
                 maxSalary = departmentEmployee.getSalary();
@@ -175,7 +186,7 @@ public class EmployeeBook {
         return maxSalary;
     }
 
-    public void printEmployeeWithMaximumSalaryInDepartment(Employee[] departmentEmployees, int maxSalary) {
+    public void printEmployeeWithMaximumSalaryInDepartment(Employee[] departmentEmployees, double maxSalary) {
         for (Employee departmentEmployee : departmentEmployees) {
             int department = departmentEmployee.getDepartment();
             if (departmentEmployee.getSalary() == maxSalary) {
@@ -186,25 +197,25 @@ public class EmployeeBook {
         System.out.println();
     }
 
-    public int calculateTotalExpensesForSalaryByDepartment(Employee[] departmentEmployees) {
-        int totalSalary = 0;
+    public double calculateTotalExpensesForSalaryByDepartment(Employee[] departmentEmployees) {
+        double totalSalary = 0;
         for (Employee departmentEmployee : departmentEmployees) {
             totalSalary = totalSalary + departmentEmployee.getSalary();
         }
         return totalSalary;
     }
 
-    public int calculateAverageSalaryPerMonthByDepartment(Employee[] departmentEmployees) {
-        int totalSalary = calculateTotalExpensesForSalaryByDepartment(departmentEmployees);
+    public double calculateAverageSalaryPerMonthByDepartment(Employee[] departmentEmployees) {
+        double totalSalary = calculateTotalExpensesForSalaryByDepartment(departmentEmployees);
         return totalSalary / departmentEmployees.length;
     }
 
-    public void printListOfEmployeesWithAdjustedSalaryByDepartment(Employee[] departmentEmployees, int increase) {
+    public void printListOfEmployeesWithAdjustedSalaryByDepartment(Employee[] departmentEmployees, double increase) {
         checkSalaryIncrease(increase);
-        System.out.printf("Перечень всех сотрудников отдела с указанием зарплаты, проиндексированной на %d %%:\n",
+        System.out.printf("Перечень всех сотрудников отдела с указанием зарплаты, проиндексированной на %.2f %%:\n",
                 increase);
         for (Employee departmentEmployee : departmentEmployees) {
-            int increasedSalary = departmentEmployee.getSalary() + departmentEmployee.getSalary() * increase / 100;
+            double increasedSalary = departmentEmployee.getSalary() + departmentEmployee.getSalary() * increase / 100;
             departmentEmployee.setSalary(increasedSalary);
             printEmployeesWithoutDepartment(departmentEmployee);
         }
@@ -237,34 +248,38 @@ public class EmployeeBook {
     }
 
     public void printEmployeesWithoutDepartment(Employee employee) {
-        System.out.println(employee.getId() + ". " + employee.getFullName() + ", зарплата: "
-                + employee.getSalary() + " руб.");
+        System.out.println(employee.getId() + ". " + employee.getLastName() + " " + employee.getFirstName() + " " +
+                            employee.getMiddleName() + ", зарплата: " + employee.getSalary() + " руб.");
     }
 
-    public void changeSalary(String fullName, int newSalary) {
+    public void changeSalary(String lastName, String firstName, String middleName, double newSalary) {
         checkSalary(newSalary);
         for (Employee employee : employees) {
-            if (employee.getFullName().equals(fullName)) {
+            if (employee.getLastName().equals(lastName) && employee.getFirstName().equals(firstName) &&
+                employee.getMiddleName().equals(middleName)) {
                 employee.setSalary(newSalary);
-                System.out.println("Обновленные данные по сотруднику " + fullName + " (изменение зарплаты):");
+                System.out.println("Обновленные данные по сотруднику " + lastName + " " + firstName + " " + middleName +
+                        " (изменение зарплаты):");
                 System.out.println(employee);
                 return;
             }
         }
-        System.out.println("Сотрудник" + fullName + " не найден.");
+        System.out.println("Сотрудник с таким именем не найден.");
     }
 
-    public void changeDepartment(String fullName, int newDepartment) {
+    public void changeDepartment(String lastName, String firstName, String middleName, int newDepartment) {
         checkDepartment(newDepartment);
         for (Employee employee : employees) {
-            if (employee.getFullName().equals(fullName)) {
+            if (employee.getLastName().equals(lastName) && employee.getFirstName().equals(firstName) &&
+                    employee.getMiddleName().equals(middleName)) {
                 employee.setDepartment(newDepartment);
-                System.out.println("Обновленные данные по сотруднику " + fullName + " (изменение отдела):");
+                System.out.println("Обновленные данные по сотруднику " + lastName + " " + firstName + " " + middleName +
+                        " (изменение отдела):");
                 System.out.println(employee);
                 return;
             }
         }
-        System.out.println("Сотрудник" + fullName + " не найден.");
+        System.out.println("Сотрудник с таким именем не найден.");
     }
 
     public void printAllEmployeesByDepartment() {
@@ -273,7 +288,7 @@ public class EmployeeBook {
             for (int j = 0; j < size; j++) {
                 Employee employee = employees[j];
                 if (employee.getDepartment() == i) {
-                    System.out.println(employee.getFullName());
+                    System.out.println(employee.getLastName() + " " + employee.getFirstName() + " " + employee.getMiddleName());
                 }
             }
         }
@@ -285,12 +300,12 @@ public class EmployeeBook {
             throw new IllegalArgumentException("Введено некорректное значение <отдел>: " + department);
         }
     }
-    public void checkSalaryIncrease(int increase) {
+    public void checkSalaryIncrease(double increase) {
         if (increase < 1 || increase > 100) {
             throw new IllegalArgumentException("Введено некорректное значение <процент индексации зарплаты>: " + increase);
         }
     }
-    public void checkSalary(int salary) {
+    public void checkSalary(double salary) {
         if (salary < 0 || salary > 1_000_000) {
             throw new IllegalArgumentException("Введено некорректное значение <зарплата>: " + salary);
         }
